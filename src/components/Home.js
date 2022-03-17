@@ -6,7 +6,6 @@ import { TextField } from '@material-ui/core';
 import Grid from '@mui/material/Grid';
 import { Box } from '@mui/material';
 import { Container } from '@mui/material';
-import { getAlbumIds, getAlbums } from '../API/getData';
 import { fetchAlbums } from '../redux/albums/albumActions';
 import { fetchAlbumsID } from '../redux';
 
@@ -55,8 +54,7 @@ const Home = () => {
     const dispatch = useDispatch();
     const albums = useSelector(state => state.reducer.data)
     const albumId = useSelector(state => state.albumIDReducer.data)
-    console.log(albums);
-    console.log(albumId);
+
 
     useEffect(() => {
 
@@ -83,7 +81,7 @@ const Home = () => {
         fetchData()
 
 
-    }, [])
+    }, [albums, albumId])
 
     const handleChange = e => {
         const { value } = e.target;
@@ -111,15 +109,15 @@ const Home = () => {
                 />
             </FormControl>
 
-            {data?.slice(0, 5).map(item => {
+            {data?.slice(0, 5).map((item) => {
 
-                return <>
+                return <div key={item.id}>
 
-                    <h3 className={classes.align}>{item.list.filter(user => user.title.toLowerCase().includes(searchInput)).length > 0 && item.title}</h3>
+                    <h3 className={classes.align}>{item?.list.filter(user => user.title.toLowerCase().includes(searchInput)).length > 0 && item.title}</h3>
                     <Box >
 
-                        {item.list.filter(user => user.title.toLowerCase().includes(searchInput)).map(item =>
-                            <>
+                        {item?.list.filter(user => user.title.toLowerCase().includes(searchInput)).map(item =>
+                            <div key={item.id}>
 
                                 <Grid container className={classes.align}>
                                     <Grid item xs={0}><img className={classes.image} src={item.url} alt="" /></Grid>
@@ -136,12 +134,12 @@ const Home = () => {
                                     </Grid>
                                 </Grid>
 
-                            </>)}
+                            </div>)}
 
                     </Box>
 
 
-                </>
+                </div>
             })}
 
         </Container>
